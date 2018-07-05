@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:/application.properties" />
+        <property name="fileEncoding" value="UTF-8" />
+    </bean>
+    
+    <!-- Hikaci-CP -->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	    <property name="poolName" value="${hikari.pool-name}" />
+	    <property name="connectionTestQuery" value="SELECT 1" />
+	    <property name="driverClassName" value="${agens.driver-class-name}" />
+	    <property name="maximumPoolSize" value="${hikari.maximum-pool-size}" />
+	    <property name="minimumIdle" value="${hikari.minimum-idle}" />
+	    <property name="jdbcUrl" value="${agens.url}" />
+	    <property name="username" value="${agens.username}" />
+	    <property name="password" value="${agens.password}" />
+	</bean>
+	
+    <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+    	<constructor-arg ref="hikariConfig" />
+	</bean>
+	
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="hikariDataSource" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="AGENS_CYPHER:::" />
+            </bean>
+        </property>
+    </bean>
+</beans>

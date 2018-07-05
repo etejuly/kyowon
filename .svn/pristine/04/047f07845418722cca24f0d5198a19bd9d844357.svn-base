@@ -1,0 +1,10 @@
+package com.kyowon.aimath.ai.test.service;
+
+import java.util.List;
+import java.util.Map;
+
+public interface TestServiceImpl {
+    List<Map<String, Object>> selectBoardList(Map<String, Object> param) throws Exception;
+
+    Map<String, Object> selectBoardOne(Map<String, Object> param) throws Exception;
+}

@@ -1,0 +1,22 @@
+package com.kyowon.aimath.ai.test.dao;
+
+import java.util.List;
+import java.util.Map;
+import org.springframework.stereotype.Repository;
+import com.kyowon.aimath.ai.common.AbstractDAO;
+
+@Repository
+public class TestDAO extends AbstractDAO {
+
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> selectBoardList(Map<String, Object> param) throws Exception {
+        param.put("unitId", "A05");
+        return selectList("test.selectBoardList", param);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> selectBoardOne(Map<String, Object> param) throws Exception {
+        param.put("lssnId", "A006");
+        return (Map<String, Object>) selectOne("test.selectBoard", param);
+    }
+}

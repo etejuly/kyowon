@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="test">
+     
+    <select id="matchListTest" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[
+            MATCH(un:unit{unit_id:#{unitId}})-[r:include]->(ku:knowledgeunit) RETURN un, r, ku;
+        ]]>
+    </select>
+     
+    <select id="matchOneTest" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[
+            MATCH(ku:knowledgeunit) WHERE ku.lssn_id=#{lssnId} RETURN ku
+        ]]>
+    </select>
+    
+    <select id="createTest" parameterType="hashmap" resultType="integer">
+        <![CDATA[
+            CREATE(un:unit{unit_id:#{unitId}}) return count(un);
+        ]]>
+    </select>
+    
+    <insert id="createTest2" parameterType="hashmap">
+        <![CDATA[
+            CREATE(un:unit{unit_id:#{unitId}});
+        ]]>
+    </insert>
+    
+    <select id="mergeTest" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[
+            MERGE(un:unit{unit_id:#{unitId}}) RETURN un;
+        ]]>
+    </select>
+    
+    <select id="setTest" parameterType="hashmap" resultType="integer">
+        <![CDATA[
+            MATCH(un:unit{unit_id:#{unitId}}) set un.setvalue='updated!!!' return count(un);
+        ]]>
+    </select>
+    
+    <update id="setTest2" parameterType="hashmap">
+        <![CDATA[
+            match (n) where n.id = 0 set n.id = 1
+        ]]>
+    </update>
+    
+    <select id="deleteTest" parameterType="hashmap" resultType="integer">
+        <![CDATA[
+            MATCH(un:unit{unit_id:#{unitId}}) detach delete un return count(un);
+        ]]>
+    </select>
+    
+    <delete id="deleteTest2" parameterType="hashmap" >
+        <![CDATA[
+            MATCH(un:unit{unit_id:#{unitId}}) detach delete un;
+        ]]>
+    </delete>
+    
+     
+</mapper>

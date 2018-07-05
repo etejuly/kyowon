@@ -1,0 +1,18 @@
+#AgensGraph
+agens.driver-class-name=net.bitnine.agensgraph.Driver
+#agens.url=jdbc:agensgraph://172.16.31.216:15432/knowledgespace?autoReconnect=true
+#agens.username=kyowon
+#agens.password=math@99
+
+agens.url=jdbc:agensgraph://10.6.7.46:5431/bitnine?autoReconnect=true
+agens.username=bitnine
+agens.password=bitnine
+
+#Hikari
+hikari.pool-name=GDB-HikariPool
+hikari.minimum-idle=5
+hikari.maximum-pool-size=10
+
+#gdb query
+agens.query.prefix=/sql/gdb/
+agens.query.suffix=.sql
