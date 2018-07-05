@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.kyowon.aimath.ai.test.dao.TestDAO;
 
 @Service
@@ -35,11 +38,16 @@ public class TestService implements TestServiceImpl {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
     public void createClause() throws Exception {
         logger.info("==================== TestService > create()");
 
         testDao.createClause();
-
+        System.out.println("========== *1* ==========");
+        testDao.createClause();
+        System.out.println("========== *2* ==========");
+        testDao.createClause();
+        System.out.println("========== *3* ==========");
     }
 
     @Override
