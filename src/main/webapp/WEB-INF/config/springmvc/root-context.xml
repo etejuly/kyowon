@@ -11,7 +11,7 @@
     </bean>
     
     <!-- Hikaci-CP -->
-    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    <bean id="hikariConfig-one" class="com.zaxxer.hikari.HikariConfig">
 	    <property name="poolName" value="${hikari.pool-name}" />
 	    <property name="connectionTestQuery" value="SELECT 1" />
 	    <property name="driverClassName" value="${agens.driver-class-name}" />
@@ -22,12 +22,38 @@
 	    <property name="password" value="${agens.password}" />
 	</bean>
 	
-    <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-    	<constructor-arg ref="hikariConfig" />
+    <bean id="hikariConfig-two" class="com.zaxxer.hikari.HikariConfig">
+	    <property name="poolName" value="${hikari.pool-name}" />
+	    <property name="connectionTestQuery" value="SELECT 1" />
+	    <property name="driverClassName" value="${agens.driver-class-name}" />
+	    <property name="maximumPoolSize" value="${hikari.maximum-pool-size}" />
+	    <property name="minimumIdle" value="${hikari.minimum-idle}" />
+	    <property name="jdbcUrl" value="${agenstwo.url}" />
+	    <property name="username" value="${agenstwo.username}" />
+	    <property name="password" value="${agenstwo.password}" />
 	</bean>
 	
-    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-        <constructor-arg ref="hikariDataSource" />
+	
+    <bean id="hikariDataSource-one" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+    	<constructor-arg ref="hikariConfig-one" />
+	</bean>
+	
+	<bean id="hikariDataSource-two" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+    	<constructor-arg ref="hikariConfig-two" />
+	</bean>
+	
+    <bean id="dataSource-one" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="hikariDataSource-one" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="AGENS_CYPHER:::" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="dataSource-two" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="hikariDataSource-two" />
         <property name="logFormatter">
             <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
                 <property name="loggingType" value="MULTI_LINE" />
@@ -37,7 +63,11 @@
     </bean>
     
     <!--  트랜잭션매니저 정의   -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
+	 -->
+	<bean id="dsOnetransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource-one" />
+	<bean id="dsTwotransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource-two"/>
+ 
 </beans>

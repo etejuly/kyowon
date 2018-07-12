@@ -1,6 +1,9 @@
 package com.kyowon.aimath.ai.common;
 
 import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +13,13 @@ import com.kyowon.aimath.ai.test.controller.TestController;
 public class AbstractDAO {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-    @Autowired
-    private SqlSessionTemplate sqlSession;
+//    @Autowired
+//    private SqlSessionTemplate sqlSession;
+    @Resource(name="dsOneSqlSessionTemplate")
+    private SqlSessionTemplate dsOneSqlSessionFactory;
+    
+    @Resource(name="dsTwoSqlSessionTemplate")
+    private SqlSessionTemplate dsTwoSqlSessionFactory;
 
     protected void printQueryId(String queryId) {
         if (logger.isDebugEnabled()) {
@@ -21,38 +29,40 @@ public class AbstractDAO {
 
     public Object insert(String queryId, Object params) {
         printQueryId(queryId);
-        return sqlSession.insert(queryId, params);
+        return dsOneSqlSessionFactory.insert(queryId, params);
     }
 
     public int update(String queryId, Object params) {
         printQueryId(queryId);
-        return sqlSession.update(queryId, params);
+        return dsOneSqlSessionFactory.update(queryId, params);
     }
 
     public Object delete(String queryId, Object params) {
         printQueryId(queryId);
-        return sqlSession.delete(queryId, params);
+        return dsOneSqlSessionFactory.delete(queryId, params);
     }
 
     public Object selectOne(String queryId) {
         printQueryId(queryId);
-        return sqlSession.selectOne(queryId);
+        return dsTwoSqlSessionFactory.selectOne(queryId);
     }
 
     public Object selectOne(String queryId, Object params) {
         printQueryId(queryId);
-        return sqlSession.selectOne(queryId, params);
+        return dsTwoSqlSessionFactory.selectOne(queryId, params);
     }
 
     @SuppressWarnings("rawtypes")
     public List selectList(String queryId) {
         printQueryId(queryId);
-        return sqlSession.selectList(queryId);
+        return dsTwoSqlSessionFactory.selectList(queryId);
     }
 
     @SuppressWarnings("rawtypes")
     public List selectList(String queryId, Object params) {
         printQueryId(queryId);
-        return sqlSession.selectList(queryId, params);
+        return dsTwoSqlSessionFactory.selectList(queryId, params);
     }
+    
+    
 }
