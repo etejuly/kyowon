@@ -11,7 +11,7 @@
      
     <select id="matchOneTest" parameterType="hashmap" resultType="hashmap">
         <![CDATA[
-            MATCH(ku:knowledgeunit) WHERE ku.lssn_id=#{lssnId} RETURN ku
+            MATCH(ku:knowledgeunit) WHERE ku.ku_id=#{kuId} RETURN ku
         ]]>
     </select>
     
@@ -41,7 +41,7 @@
     
     <update id="setTest2" parameterType="hashmap">
         <![CDATA[
-            match (n) where n.id = 0 set n.id = 1
+        	MATCH(un:unit{unit_id:#{kuId}}) SET un.set_test = #{kuNm};
         ]]>
     </update>
     
