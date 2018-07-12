@@ -101,4 +101,11 @@ public class TestController {
         testService.deleteClause();
         return null;
     }
+    
+    @RequestMapping(value = "/agetl", method = RequestMethod.GET)
+    public String agetlClause(Locale locale, Model model) throws Exception {
+        logger.info("==================== TestController > /test");
+        testService.agetlClause();
+        return null;
+    }
 }

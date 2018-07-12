@@ -16,4 +16,5 @@ public interface TestServiceImpl {
 
     void deleteClause() throws Exception;
 
+    void agetlClause() throws Exception;
 }
