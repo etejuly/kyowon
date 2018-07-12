@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 import com.kyowon.aimath.ai.common.AbstractDAO;
 
+import net.bitnine.agensgraph.graph.Vertex;
+
 @Repository
 public class TestDAO extends AbstractDAO {
 
@@ -61,21 +63,22 @@ public class TestDAO extends AbstractDAO {
          */
     }
 
-    public int setClause() throws Exception {
+    @SuppressWarnings("unchecked")
+	public int setClause() throws Exception {
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("unitId", "TTT");
-        int result = update("test.setTest2", param);
+        param.put("lssnId", "A006");
+        Map<String, Object> result = (Map<String, Object>) selectOne("test.matchOneTest", param);
+        System.out.println("result"+result);
+        System.out.println("result"+result.get("ku"));
+        Vertex ku = (Vertex) result.get("ku");
+        String lssn_id = ku.getString("lssn_id");
+        param.put("unitId", lssn_id);
+        int result2 = update("test.setTest2", param);
         System.out.println("========== setClause result Begin ==========");
-        /* Mybatis는 Update쿼리 수행시 Update된 행의 개수를 리턴하지만 Cypher구문에서는 수정여부와 상관없이 항상 0을 리턴 */
-        System.out.println(result);
+        System.out.println(result2);
         System.out.println("========== setClause result End ==========");
-        return result;
+        return result2;
 
-        /*
-         * int result = (Integer) selectOne("test.setTest", param); setTest쿼리와 같이 Mybatis의<select>를
-         * 통하여 Match-Set Cypher구문을 실행하고 count리턴값으로 데이터의 업데이트 된 오브젝트의 개수를 리턴하여 판단은 가능하나 Agens-Mybatis
-         * 연동가이드 또는 정책에 맞는 기준 요청
-         */
     }
 
     public void deleteClause() throws Exception {
